@@ -2,9 +2,13 @@ package ru.netology.tests;
 
 import lombok.val;
 import org.junit.jupiter.api.*;
+import ru.netology.data.SQLHelper;
 import ru.netology.pages.*;
 
+import java.sql.SQLException;
+
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.DataHelper.*;
 import static ru.netology.data.SQLHelper.*;
 
@@ -17,7 +21,7 @@ public class TestAuth {
 
     @AfterAll
     public static void cleanDatabase() {
-        cleanDb();
+        SQLHelper.cleanDb();
     }
 
     @Test
@@ -57,15 +61,16 @@ public class TestAuth {
     }
 
     @Test
-    void shouldNotLoginIfEnteredInvalidPasswordThreeTimes() {
+    void shouldNotLoginIfEnteredInvalidPasswordThreeTimes() throws SQLException {
+        SQLHelper mySql = new SQLHelper();
         val loginPage = new LoginPage();
         val authInfo = getInvalidPassword();
         loginPage.authSteps(authInfo);
-        loginPage.invalidAuth();
         loginPage.clearPasswordField();
         loginPage.sendInvalidPassword(authInfo.getPassword());
         loginPage.clearPasswordField();
         loginPage.sendInvalidPassword(authInfo.getPassword());
-        loginPage.loginButtonShouldBeDisabled();
+        val statusSQL = mySql.getStatusFromDb(authInfo.getLogin());
+        assertEquals("blocked", statusSQL);
     }
 }

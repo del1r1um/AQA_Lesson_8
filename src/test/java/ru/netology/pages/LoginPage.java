@@ -33,10 +33,6 @@ public class LoginPage {
         loginButton.click();
     }
 
-    public void loginButtonShouldBeDisabled() {
-        loginButton.shouldBe(Condition.disabled);
-    }
-
     public void clearPasswordField() {
         passwordField.doubleClick().sendKeys(Keys.DELETE);
     }
