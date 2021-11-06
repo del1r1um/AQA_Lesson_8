@@ -5,8 +5,6 @@ import org.junit.jupiter.api.*;
 import ru.netology.data.SQLHelper;
 import ru.netology.pages.*;
 
-import java.sql.SQLException;
-
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.DataHelper.*;
@@ -61,7 +59,7 @@ public class TestAuth {
     }
 
     @Test
-    void shouldNotLoginIfEnteredInvalidPasswordThreeTimes() throws SQLException {
+    void shouldNotLoginIfEnteredInvalidPasswordThreeTimes() {
         SQLHelper mySql = new SQLHelper();
         val loginPage = new LoginPage();
         val authInfo = getInvalidPassword();

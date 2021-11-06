@@ -60,17 +60,19 @@ public class SQLHelper {
         }
     }
 
-    public String getStatusFromDb(String login) throws SQLException {
+    public String getStatusFromDb(String login) {
         String statusSQL = "SELECT status FROM users WHERE login = ?;";
         String status = null;
         try (val conn = getConnection();
-             val statusStmt = conn.prepareStatement(statusSQL);) {
+             val statusStmt = conn.prepareStatement(statusSQL)) {
             statusStmt.setString(1, login);
             try (val rs = statusStmt.executeQuery()) {
                 if (rs.next()) {
                     status = rs.getString("status");
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return status;
     }
